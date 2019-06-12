@@ -3,10 +3,7 @@ const Schema = mongooseDB.Schema;
 
 //Create Schema
 const CategorySchema = new Schema({
-    budget: {
-        type:Number,
-        default:0
-    },
+    
     category: {
         type: String,
         required: true
