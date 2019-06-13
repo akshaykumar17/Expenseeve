@@ -44,7 +44,7 @@ export class ToolBar extends Component {
                         </Navbar>
                     </div>
 
-                    <div className="ml-auto content">
+                    <div className="m-auto content">
                         <Route exact path="/" component={Home} />
                         <Route path="/setting" component={Settings} />
                     </div>
