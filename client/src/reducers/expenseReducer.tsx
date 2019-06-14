@@ -1,26 +1,27 @@
-import { GET_CATEGORY, ADD_CATEGORY, SOFTDEL_CATEGORY, LOADING_ITEMS } from '../actions/types';
+import { LOADING_ITEMS , ADD_EXPENSE, GET_EXPENSE, SOFTDELETE_EXPENSE } from '../actions/types';
 
 const initialState = {
-    items: [],
+    expenses: [],
     loading: false
 };
 
 export default (state = initialState, action: any) => {
     switch (action.type) {
-        case GET_CATEGORY:
+        case GET_EXPENSE:
             return {
                 ...state,
-                items: action.payload,
+                expenses: action.payload,
                 loading: false
             };
-        case SOFTDEL_CATEGORY:
+        case SOFTDELETE_EXPENSE:
             return {
                 ...state
             };
-        case ADD_CATEGORY:
+        case ADD_EXPENSE:
+            console.log(state+' '+state.expenses);
             return {
                 ...state,
-                items: [...state.items, action.payload]
+                expenses: [...state.expenses, action.payload]
             };
         case LOADING_ITEMS:
             return {

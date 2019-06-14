@@ -3,21 +3,12 @@ import { Route, NavLink, HashRouter } from 'react-router-dom'
 import Home from '../Components/Home'
 import Settings from '../Components/Settings'
 import {
-    Collapse,
     Navbar,
-    NavbarToggler,
-    NavbarBrand,
     Nav,
-    NavItem,
-
-    Container
+    NavItem
 } from 'reactstrap';
 
 
-const details = {
-    width: '80%',
-    marginLeft: 'auto'
-};
 export class ToolBar extends Component {
 
     render() {

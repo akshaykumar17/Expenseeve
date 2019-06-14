@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Container, ListGroup, ListGroupItem, ListGroupItemText, Button, Input, Form, FormGroup } from 'reactstrap'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import uuid from 'uuid';
 import { getitems, deleteItem, addItem } from '../actions/categoryActions';
 
 

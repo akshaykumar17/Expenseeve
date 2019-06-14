@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 
 
 const categories = require('./routes/api/categoriesRouter');
+const expenses = require('./routes/api/expenseRouter');
+const budget = require('./routes/api/budgetRouter');
 
 const app = express();
 
@@ -14,12 +16,18 @@ app.use(bodyParser.json());
 const db = require('./Config/Keys').mongoURI;
 
 //Connect to Mongo
-mongoose.connect(db)
+mongoose.connect(db, {
+    useNewUrlParser: true,
+    useCreateIndex: true
+})
     .then(() => console.log("MongoDB Connected..."))
     .catch(err => console.log(err));
 
 //Use Routes
 app.use('/api/category', categories);
+app.use('/api/budget', budget);
+app.use('/api/expense', expenses);
+
 
 const port = process.env.PORT || 5000;
 

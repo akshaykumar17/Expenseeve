@@ -3,6 +3,10 @@ const Schema = mongooseDB.Schema;
 
 //Create Schema
 const ExpenseItemSchema = new Schema({
+    category: {
+        type: String,
+        required: true
+    },
     item: {
         type: String,
         required: true
@@ -22,4 +26,4 @@ const ExpenseItemSchema = new Schema({
 });
 
 
-export const Expense = mongooseDB.model('expense', ExpenseItemSchema);
+module.exports = Expense = mongooseDB.model('expense', ExpenseItemSchema);
