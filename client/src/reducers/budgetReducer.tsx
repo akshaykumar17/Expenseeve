@@ -8,7 +8,6 @@ const initialState = {
 export default (state = initialState, action: any) => {
     switch (action.type) {
         case GET_BUDGET:
-                console.log(action.payload);
             return {
                 ...state,
                 budget:  action.payload,
@@ -19,7 +18,6 @@ export default (state = initialState, action: any) => {
                 ...state
             };
         case ADD_BUDGET:
-            console.log(state+' '+state.budget);
             return {
                 ...state,
                 budget:  action.payload

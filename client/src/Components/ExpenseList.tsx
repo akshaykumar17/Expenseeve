@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
     Modal,
@@ -17,15 +16,10 @@ import {
     ModalFooter
 }
     from 'reactstrap'
-//import { getitems } from '../actions/categoryActions';
 import { addExpense } from '../actions/expenseActions'
+import { BudgetOverView } from './BudgetOverView';
 
 export class ExpenseList extends Component<any, any> {
-    static propTypes: { getitems: PropTypes.Validator<(...args: any[]) => any>; category: PropTypes.Validator<object>; };
-
-    componentDidMount() {
-        //this.props.getitems();
-    }
     state = {
         modalopen: false,
         dropdownOpen: false,
@@ -62,6 +56,7 @@ export class ExpenseList extends Component<any, any> {
         const { items } = this.props;
         return (
             <div>
+                <BudgetOverView budget={this.props.budget} expense={this.props.expense} />
 
                 <Form inline onSubmit={(e) => e.preventDefault()}>
 
@@ -125,11 +120,4 @@ export class ExpenseList extends Component<any, any> {
 //     category: PropTypes.object.isRequired
 // }
 
-const mapStateToProps = (state: any) => ({
-    category: state.category
-})
-
-export default connect(
-    mapStateToProps,
-    { addExpense }
-)(ExpenseList);
+export default ExpenseList;

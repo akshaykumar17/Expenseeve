@@ -1,12 +1,27 @@
 .remove-btn {
   margin-right: 1.7rem;
 }
-
+.budgetBox{
+  height: 230px;
+  margin-bottom: 80px;
+    width: 90%;
+    border: 2px solid rgb(221, 221, 221);
+}
+ul li {
+  display: flex;
+}
+.overdue{
+  stroke:#c73e41;
+}
+.nooverdue{
+  stroke: #3e98c7;
+}
 .expense-modal{
   width: -webkit-fill-available;
 }
 .content{
   height: 90%;
+  margin-left: 6rem !important;
 }
 .table{
   box-sizing: content-box
@@ -15,7 +30,7 @@
   border-left: 1px solid #dee2e6;
   border-right: 1px solid #dee2e6;
 }
-.table td {
+.table td , .table th{
   padding: .75rem;
   vertical-align: top;
   border-top: 1px solid #dee2e6;

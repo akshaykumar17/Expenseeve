@@ -20,7 +20,8 @@ import {
 }
     from 'reactstrap';
 
-import { updateExpense, getExpenses, softExpense } from '../actions/expenseActions'
+import { updateExpense, getExpenses, softExpense, deleteExpense, addExpense } from '../actions/expenseActions'
+import { ExpenseList } from './ExpenseList';
 
 export class ExpenseContent extends Component<any, any> {
     static propTypes: { getExpenses: PropTypes.Validator<(...args: any[]) => any>; expense: PropTypes.Validator<object>; };
@@ -39,7 +40,7 @@ export class ExpenseContent extends Component<any, any> {
         const { category, itemName, amount, id } = this.state;
         this.props.updateExpense({ id, category, item: itemName, amount: +amount });
 
-        this.rerenderCom();
+        //this.rerenderCom();
     };
     onChange: any = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({ [e.target.name]: e.target.value });
@@ -55,8 +56,25 @@ export class ExpenseContent extends Component<any, any> {
         this.props.getExpenses();
     }
     componentDidMount() {
-        this.props.getExpenses();
+        //this.props.getExpenses();
         console.log(this.props.items)
+        //this.filterExpenses();
+    }
+    componentDidUpdate() {
+        if (!this.state.loaded) {
+            console.log('once')
+            const expenses = this.props.expense.expenses.map((list: { _id: any, category: any }) => {
+
+                this.props.items.map((item: { category: any, isActive: boolean }) => {
+                    //console.log(!item.isActive && item.category===list.category)
+                    //console.log(item.category+''+list.category)
+                    if (!item.isActive && item.category === list.category && list._id)
+                        this.props.deleteExpense(list._id);
+                })
+            });
+            this.setState({loaded: true})
+        }
+
     }
     state = {
         modalopen: false,
@@ -65,7 +83,8 @@ export class ExpenseContent extends Component<any, any> {
         category: '',
         itemName: '',
         amount: '',
-        isActive: true
+        isActive: true,
+        loaded: false
     }
     toggle: any = (item: any) => {
         this.setState({
@@ -91,6 +110,10 @@ export class ExpenseContent extends Component<any, any> {
 
         return (
             <div>
+                <div>
+                    <ExpenseList addExpense={this.props.addExpense} items={this.props.items.filter((item: any) => item.isActive === true)} expense={this.props.expense} budget={this.props.budget} />
+
+                </div>
                 <Form>
                     <FormGroup>
                         <div>
@@ -230,16 +253,9 @@ export class ExpenseContent extends Component<any, any> {
     }
 }
 
-ExpenseContent.propTypes = {
-    getExpenses: PropTypes.func.isRequired,
-    expense: PropTypes.object.isRequired
-}
+
 
 const mapStateToProps = (state: any) => ({
-    expense: state.expense
 })
 
-export default connect(
-    mapStateToProps,
-    { getExpenses, updateExpense, softExpense }
-)(ExpenseContent);
+export default ExpenseContent;

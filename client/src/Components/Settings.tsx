@@ -59,8 +59,8 @@ export class Settings extends Component<any, any> {
         const totalamount = this.props.budget.budget.length === 1 ? this.props.budget.budget[0].totalamount : 0;
 
         return (
-            <div>
-                <Container style={{ marginTop: '4rem' }}>
+            
+                <Container style={{ marginTop: '2.5rem' }}>
                     <Form>
                         <FormGroup>
                             {totalamount === 0 ? (
@@ -135,7 +135,7 @@ export class Settings extends Component<any, any> {
                     </Form>
                 </Container>
 
-            </div>
+           
         )
     }
 }
