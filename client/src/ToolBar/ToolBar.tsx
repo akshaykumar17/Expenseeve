@@ -13,9 +13,9 @@ export class ToolBar extends Component {
 
     render() {
         return (
-            <div style={{ display: "flex" }}>
+            <div style={{ display: "flex",height:'100%' }}>
                 <HashRouter>
-                    <div>
+                    <div className='navbarnav'>
                         <Navbar style={{ display: "inherit" }} color="bright" expand="sm" className="mr-5">
                             <Nav navbar >
                                 <NavItem>

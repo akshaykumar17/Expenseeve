@@ -11,6 +11,7 @@ router.get('/', (req, res) => {
     Expense.find()
         .sort({ date: -1 })
         .then(items => res.json(items))
+        .catch(err=>  res.send(err))
 });
 
 //@route POST api/expenses

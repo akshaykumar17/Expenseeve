@@ -1,33 +1,30 @@
-import { LOADING_ITEMS , ADD_EXPENSE, GET_EXPENSE, SOFTDELETE_EXPENSE, UPDATE_EXPENSE } from '../actions/types';
+import { LOADING_ITEMS, GET_BUDGET, ADD_BUDGET, UPDATE_BUDGET } from '../actions/types';
 
 const initialState = {
-    expenses: [],
+    budget: {},
     loading: false
 };
 
 export default (state = initialState, action: any) => {
     switch (action.type) {
-        case GET_EXPENSE:
+        case GET_BUDGET:
+                console.log(action.payload);
             return {
                 ...state,
-                expenses: action.payload,
+                budget:  action.payload,
                 loading: false
             };
-        case UPDATE_EXPENSE:
+        case UPDATE_BUDGET:
             return {
                 ...state
             };
-        case ADD_EXPENSE:
-            console.log(state+' '+state.expenses);
+        case ADD_BUDGET:
+            console.log(state+' '+state.budget);
             return {
                 ...state,
-                expenses: [...state.expenses, action.payload]
+                budget:  action.payload
             };
-        case SOFTDELETE_EXPENSE:
-            return{
-                ...state,
-                expenses:[...state.expenses]
-            }
+        
         case LOADING_ITEMS:
             return {
                 ...state,

@@ -11,6 +11,7 @@ router.get('/', (req, res) => {
     Budget.find()
         .sort({ date: -1 })
         .then(amount => res.json(amount))
+        .catch(err=> res.status(500).json({err:true}))
 });
 
 //@route POST api/categories
@@ -18,7 +19,7 @@ router.get('/', (req, res) => {
 //@access Public
 router.post('/', (req, res) => {
     const newBudget = new Budget({
-        totalamount: req.body.amount
+        totalamount: req.body.totalamount
     });
 
     newBudget.save().then(item => res.json(item));

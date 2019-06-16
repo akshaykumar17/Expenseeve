@@ -17,19 +17,19 @@ import {
     ModalFooter
 }
     from 'reactstrap'
-import { getitems } from '../actions/categoryActions';
-import { addItem } from '../actions/expenseActions'
+//import { getitems } from '../actions/categoryActions';
+import { addExpense } from '../actions/expenseActions'
 
 export class ExpenseList extends Component<any, any> {
     static propTypes: { getitems: PropTypes.Validator<(...args: any[]) => any>; category: PropTypes.Validator<object>; };
-    
+
     componentDidMount() {
-        this.props.getitems();
+        //this.props.getitems();
     }
     state = {
         modalopen: false,
         dropdownOpen: false,
-        category: '',
+        category: 'Select Category',
         itemName: '',
         amount: Number
     }
@@ -37,7 +37,7 @@ export class ExpenseList extends Component<any, any> {
         this.toggle();
         console.log('hi')
         const { category, itemName, amount } = this.state;
-        this.props.addItem({ category, item: itemName, amount: +amount });
+        this.props.addExpense({ category, item: itemName, amount: +amount });
     };
     onhandleDropDown: any = (item: any) => {
         this.setState({
@@ -59,7 +59,7 @@ export class ExpenseList extends Component<any, any> {
     };
 
     render() {
-        const { items } = this.props.category;
+        const { items } = this.props;
         return (
             <div>
 
@@ -77,7 +77,7 @@ export class ExpenseList extends Component<any, any> {
                     <ModalBody>
                         <Form>
                             <FormGroup >
-                                <Label for="category">Item : </Label>
+                                <Label className='expense-modal' for="category">Category  : </Label>
                                 <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggleBtn.bind(this)}>
                                     <DropdownToggle caret>
                                         {this.state.category}</DropdownToggle>
@@ -89,7 +89,7 @@ export class ExpenseList extends Component<any, any> {
                                 </ButtonDropdown>
                             </FormGroup>
                             <FormGroup>
-                                <Label for="item">Item : </Label>
+                                <Label className='expense-modal' for="item">Item : </Label>
                                 <Input
                                     className="ml-auto"
                                     type="text"
@@ -99,7 +99,7 @@ export class ExpenseList extends Component<any, any> {
                                     onChange={this.onChange.bind(this)} />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="cost">Amount : </Label>
+                                <Label className='expense-modal' for="cost">Amount : </Label>
                                 <Input
                                     type="text"
                                     name="amount"
@@ -120,10 +120,10 @@ export class ExpenseList extends Component<any, any> {
     }
 }
 
-ExpenseList.propTypes = {
-    getitems: PropTypes.func.isRequired,
-    category: PropTypes.object.isRequired
-}
+// ExpenseList.propTypes = {
+//     getitems: PropTypes.func.isRequired,
+//     category: PropTypes.object.isRequired
+// }
 
 const mapStateToProps = (state: any) => ({
     category: state.category
@@ -131,5 +131,5 @@ const mapStateToProps = (state: any) => ({
 
 export default connect(
     mapStateToProps,
-    { getitems, addItem }
+    { addExpense }
 )(ExpenseList);

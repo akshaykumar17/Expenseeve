@@ -8,7 +8,7 @@ import './App.css'
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <div className="App">
+      <div className="App" style={{height:'55rem'}}>
         <ToolBar />
       </div>
     </Provider>
