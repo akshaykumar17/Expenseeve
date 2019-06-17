@@ -24,6 +24,7 @@ export class Settings extends Component<any, any> {
                 if (item._id===id && item.category === list.category && list._id)
                     this.props.deleteExpense(list._id);
             })
+            return list;
         });
         this.props.deleteItem(id);
     };
@@ -144,7 +145,7 @@ export class Settings extends Component<any, any> {
                                                     size="md"
                                                     onClick={this.onDelete.bind(this, item._id)}
                                                 >
-                                                    <img src={trash} /></Button>
+                                                    <img src={trash} alt={""} /></Button>
                                             </ListGroupItem>
                                         </CSSTransition>
 

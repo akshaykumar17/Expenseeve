@@ -13,7 +13,6 @@ import {
     DropdownMenu,
     DropdownItem,
     ModalFooter,
-    Popover,
     PopoverBody,
     UncontrolledPopover
 }
@@ -59,7 +58,6 @@ export class ExpenseList extends Component<any, any> {
 
     render() {
         const { items } = this.props;
-        console.log(items)
         return (
             <div>
                 <BudgetOverView budget={this.props.budget} expense={this.props.expense} />

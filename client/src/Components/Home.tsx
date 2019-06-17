@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { Container } from 'reactstrap'
 import PropTypes from 'prop-types';
-import ExpenseList from './ExpenseList'
 import ExpenseContent from './ExpenseContent'
-import BudgetOverView from './BudgetOverView'
 import { getitems } from '../actions/categoryActions';
 import { getBudget } from '../actions/budgetActions';
 import { getExpenses, updateExpense, softExpense, deleteExpense, addExpense } from '../actions/expenseActions'

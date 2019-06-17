@@ -21,8 +21,6 @@ import {
 
 }
     from 'reactstrap';
-
-import { updateExpense, getExpenses, softExpense, deleteExpense, addExpense } from '../actions/expenseActions'
 import { ExpenseList } from './ExpenseList';
 
 export class ExpenseContent extends Component<any, any> {
@@ -61,13 +59,12 @@ export class ExpenseContent extends Component<any, any> {
     }
     componentDidMount() {
         //this.props.getExpenses();
-        console.log(this.props.items)
+        //console.log(this.props.items)
         //this.filterExpenses();
     }
     componentDidUpdate() {
         if (!this.state.loaded) {
-            console.log('once')
-            const expenses = this.props.expense.expenses.map((list: { _id: any, category: any }) => {
+            this.props.expense.expenses.map((list: { _id: any, category: any }) => {
 
                 this.props.items.map((item: { category: any, isActive: boolean }) => {
                     //console.log(!item.isActive && item.category===list.category)
@@ -75,6 +72,7 @@ export class ExpenseContent extends Component<any, any> {
                     if (!item.isActive && item.category === list.category && list._id)
                         this.props.deleteExpense(list._id);
                 })
+              return list;  
             });
             this.setState({ loaded: true })
         }

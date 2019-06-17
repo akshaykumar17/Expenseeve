@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import { Form, FormGroup, Label, Button } from 'reactstrap';
 import {
     CircularProgressbar
 } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import ReactMinimalPieChart from 'react-minimal-pie-chart'
-import { number } from 'prop-types';
 
 
 
@@ -79,7 +77,6 @@ export class BudgetOverView extends Component<any, any> {
             value: budgetamount ? (budgetamount - leftBudget) * 100 / budgetamount : 1,
             color: '#' + Math.random().toString(16).substr(-6)
         })
-        console.log(data)
         return (
             <div style={{ display: 'flex' }}>
 
