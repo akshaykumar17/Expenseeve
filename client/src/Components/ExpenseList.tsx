@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
 import {
     Modal,
     ModalHeader,
@@ -13,10 +12,12 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    ModalFooter
+    ModalFooter,
+    Popover,
+    PopoverBody,
+    UncontrolledPopover
 }
     from 'reactstrap'
-import { addExpense } from '../actions/expenseActions'
 import { BudgetOverView } from './BudgetOverView';
 
 export class ExpenseList extends Component<any, any> {
@@ -27,11 +28,14 @@ export class ExpenseList extends Component<any, any> {
         itemName: '',
         amount: Number
     }
-    onSubmit: any = () => {
-        this.toggle();
-        console.log('hi')
+    onSubmit: any = () => {        
         const { category, itemName, amount } = this.state;
-        this.props.addExpense({ category, item: itemName, amount: +amount });
+        if (category !== 'Select Category' && itemName !== '' && amount!==null){
+            this.toggle();
+            this.props.addExpense({ category, item: itemName, amount: +amount });
+        }
+           
+       
     };
     onhandleDropDown: any = (item: any) => {
         this.setState({
@@ -43,6 +47,7 @@ export class ExpenseList extends Component<any, any> {
             dropdownOpen: !this.state.dropdownOpen
         });
     }
+    
     toggle: any = () => {
         this.setState({
             modalopen: !this.state.modalopen
@@ -54,6 +59,7 @@ export class ExpenseList extends Component<any, any> {
 
     render() {
         const { items } = this.props;
+        console.log(items)
         return (
             <div>
                 <BudgetOverView budget={this.props.budget} expense={this.props.expense} />
@@ -78,7 +84,7 @@ export class ExpenseList extends Component<any, any> {
                                         {this.state.category}</DropdownToggle>
                                     <DropdownMenu>
                                         {items.map((item: { _id: any, category: any, isActive: boolean }) => (
-                                            <DropdownItem key={item._id} onClick={this.onhandleDropDown.bind(this, item)}>{item.category}</DropdownItem>
+                                            <DropdownItem required key={item._id} onClick={this.onhandleDropDown.bind(this, item)}>{item.category}</DropdownItem>
                                         ))}
                                     </DropdownMenu>
                                 </ButtonDropdown>
@@ -105,7 +111,10 @@ export class ExpenseList extends Component<any, any> {
                         </Form>
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.onSubmit.bind(this)}>ADD</Button>
+                        <Button id="PopoverFocus" type="button" color="primary" onClick={this.onSubmit.bind(this)}>ADD</Button>
+                        <UncontrolledPopover trigger="focus" placement="bottom" target="PopoverFocus">
+                            <PopoverBody>All the fields are mandatory</PopoverBody>
+                        </UncontrolledPopover>
                         <Button color="danger" onClick={this.toggle.bind(this)}>Close</Button>
                     </ModalFooter>
                 </Modal>
@@ -115,9 +124,5 @@ export class ExpenseList extends Component<any, any> {
     }
 }
 
-// ExpenseList.propTypes = {
-//     getitems: PropTypes.func.isRequired,
-//     category: PropTypes.object.isRequired
-// }
 
 export default ExpenseList;

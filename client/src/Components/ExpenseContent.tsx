@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import edit from "../edit.png";
 import {
     Modal,
     ModalHeader,
@@ -15,7 +15,9 @@ import {
     DropdownMenu,
     DropdownItem,
     ModalFooter,
-    Table
+    Table,
+    UncontrolledPopover,
+    PopoverBody
 
 }
     from 'reactstrap';
@@ -38,8 +40,10 @@ export class ExpenseContent extends Component<any, any> {
     onSubmit: any = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         const { category, itemName, amount, id } = this.state;
-        this.props.updateExpense({ id, category, item: itemName, amount: +amount });
-
+        if (category !== 'Select Category' && itemName !== '' && amount !== null) {
+            this.toggleModal();
+            this.props.updateExpense({ id, category, item: itemName, amount: +amount });
+        }
         //this.rerenderCom();
     };
     onChange: any = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +76,7 @@ export class ExpenseContent extends Component<any, any> {
                         this.props.deleteExpense(list._id);
                 })
             });
-            this.setState({loaded: true})
+            this.setState({ loaded: true })
         }
 
     }
@@ -132,8 +136,8 @@ export class ExpenseContent extends Component<any, any> {
 
                                         <tr key={list._id} >
                                             <th scope="row">
-                                                <Button key={list._id + list.amount} onClick={this.toggle.bind(this, list)}>
-                                                    edit
+                                                <Button outline color="info" key={list._id + list.amount} onClick={this.toggle.bind(this, list)}>
+                                                    <img src={edit} />
                                                 </Button>
                                             </th>
                                             <td className={list.isActive ? '' : 'isActiveFalse'} >{list.category}</td>
@@ -236,7 +240,10 @@ export class ExpenseContent extends Component<any, any> {
 
                     {isActive ? (
                         <ModalFooter>
-                            <Button color="primary" onClick={this.onSubmit.bind(this)}>Update</Button>
+                            <Button id="PopoverFocus" type="button" color="primary" onClick={this.onSubmit.bind(this)}>Update</Button>
+                            <UncontrolledPopover trigger="focus" placement="bottom" target="PopoverFocus">
+                                <PopoverBody>All the fields are mandatory</PopoverBody>
+                            </UncontrolledPopover>
                             <Button color="danger" onClick={this.toggleDel.bind(this)}>Delete</Button>
                         </ModalFooter>
                     ) :
@@ -253,9 +260,5 @@ export class ExpenseContent extends Component<any, any> {
     }
 }
 
-
-
-const mapStateToProps = (state: any) => ({
-})
 
 export default ExpenseContent;

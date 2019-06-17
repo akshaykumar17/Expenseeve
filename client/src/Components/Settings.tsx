@@ -3,15 +3,29 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Container, ListGroup, ListGroupItem, ListGroupItemText, Button, Input, Form, FormGroup, Label } from 'reactstrap'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { getitems, deleteItem, addItem } from '../actions/categoryActions';
+import { getitems, deleteItem, addItem ,softdeleteItem } from '../actions/categoryActions';
 import { addBudget, getBudget, updateBudget } from '../actions/budgetActions'
+import { getExpenses,deleteExpense } from '../actions/expenseActions'
+import trash from '../trash.png'
 
 
 export class Settings extends Component<any, any> {
     onDeleteClick = (item: any) => {
         item.isActive = !item.isActive;
-        this.props.deleteItem(item._id, item.category, item.isActive);
+        this.props.softdeleteItem(item._id, item.category, item.isActive);
         this.setState({ softdele: !item.isActive });
+    };
+    onDelete: any =(id:any)=>{
+        this.props.expense.expenses.map((list: { _id: any, category: any }) => {
+
+            this.props.category.items.map((item: {_id:any, category: any, isActive: boolean }) => {
+                //console.log(!item.isActive && item.category===list.category)
+                //console.log(item.category+''+list.category)
+                if (item._id===id && item.category === list.category && list._id)
+                    this.props.deleteExpense(list._id);
+            })
+        });
+        this.props.deleteItem(id);
     };
     onSumbitAdd = () => {
 
@@ -28,7 +42,8 @@ export class Settings extends Component<any, any> {
         else
             this.props.updateBudget({ id: id, totalamount: this.state.budgetamount });
     };
-    static propTypes: { getBudget: PropTypes.Validator<(...args: any[]) => any>; getitems: PropTypes.Validator<(...args: any[]) => any>; category: PropTypes.Validator<object>; budget: PropTypes.Validator<object>; };
+    static propTypes: { getExpenses: PropTypes.Validator<(...args: any[]) => any>; getBudget: PropTypes.Validator<(...args: any[]) => any>; getitems: PropTypes.Validator<(...args: any[]) => any>; category: PropTypes.Validator<object>; expense: PropTypes.Validator<object>; budget: PropTypes.Validator<object>; };
+    
     constructor(props: any) {
         super(props);
         this.state = {
@@ -39,8 +54,9 @@ export class Settings extends Component<any, any> {
         }
     }
     componentDidMount() {
-            this.props.getitems();
-            this.props.getBudget(); 
+        this.props.getitems();
+        this.props.getBudget();
+        this.props.getExpenses()
     }
     componentDidUpdate() {
         const totalamount = this.props.budget.budget.length === 1 ? this.props.budget.budget[0].totalamount : 0;
@@ -59,11 +75,24 @@ export class Settings extends Component<any, any> {
         const totalamount = this.props.budget.budget.length === 1 ? this.props.budget.budget[0].totalamount : 0;
 
         return (
-            
-                <Container style={{ marginTop: '2.5rem' }}>
-                    <Form>
-                        <FormGroup>
-                            {totalamount === 0 ? (
+
+            <Container style={{ marginTop: '2.5rem' }}>
+                <Form>
+                    <FormGroup>
+                        {totalamount === 0 ? (
+                            <div style={{ display: "flex" }}>
+                                <Label style={{ marginRight: '1.5rem', marginTop: '.5rem' }}>Budget</Label>
+                                <Input style={{ marginRight: "1.5rem" }} type="text" value={budgetamount} onChange={(e) => { this.setState({ budgetamount: e.target.value }) }} />
+
+                                <Button
+                                    color="dark"
+                                    style={{ marginBottom: '2rem' }}
+                                    onClick={this.onSumbitBudget.bind(this)}
+                                >
+                                    Add </Button>
+                            </div>
+                        ) :
+                            (
                                 <div style={{ display: "flex" }}>
                                     <Label style={{ marginRight: '1.5rem', marginTop: '.5rem' }}>Budget</Label>
                                     <Input style={{ marginRight: "1.5rem" }} type="text" value={budgetamount} onChange={(e) => { this.setState({ budgetamount: e.target.value }) }} />
@@ -73,86 +102,81 @@ export class Settings extends Component<any, any> {
                                         style={{ marginBottom: '2rem' }}
                                         onClick={this.onSumbitBudget.bind(this)}
                                     >
-                                        Add </Button>
+                                        Update </Button>
+
                                 </div>
-                            ) :
-                                (
-                                    <div style={{ display: "flex" }}>
-                                        <Label style={{ marginRight: '1.5rem', marginTop: '.5rem' }}>Budget</Label>
-                                        <Input style={{ marginRight: "1.5rem" }} type="text" value={budgetamount} onChange={(e) => { this.setState({ budgetamount: e.target.value }) }} />
+                            )
+                        }
+                    </FormGroup>
+                    <FormGroup>
+                        <div style={{ display: "flex" }}>
+                            <Label style={{ marginRight: '1.5rem', marginTop: '.5rem' }}>Category</Label>
+                            <Input style={{ marginRight: "1.5rem" }} type="text" value={categoryname} onChange={(e) => { this.setState({ categoryname: e.target.value }) }} />
+                            <Button
+                                color="dark"
+                                style={{ marginBottom: '2rem' }}
+                                onClick={this.onSumbitAdd.bind(this)}
+                            >
+                                Add </Button>
+                        </div>
+                    </FormGroup>
+                    <FormGroup>
+                        <div>
+                            <ListGroup>
+                                <TransitionGroup className="category-list">
+                                    {items.map((item: { _id: any, category: any, isActive: boolean }) => (
 
-                                        <Button
-                                            color="dark"
-                                            style={{ marginBottom: '2rem' }}
-                                            onClick={this.onSumbitBudget.bind(this)}
-                                        >
-                                            Update </Button>
+                                        < CSSTransition key={item._id} timeout={500} classNames="fade" >
+                                            <ListGroupItem style={{ color: item.isActive ? '' : '#b3b5b7 !important' }}>
 
-                                    </div>
-                                )
-                            }
-                        </FormGroup>
-                        <FormGroup>
-                            <div style={{ display: "flex" }}>
-                                <Label style={{ marginRight: '1.5rem', marginTop: '.5rem' }}>Category</Label>
-                                <Input style={{ marginRight: "1.5rem" }} type="text" value={categoryname} onChange={(e) => { this.setState({ categoryname: e.target.value }) }} />
-                                <Button
-                                    color="dark"
-                                    style={{ marginBottom: '2rem' }}
-                                    onClick={this.onSumbitAdd.bind(this)}
-                                >
-                                    Add </Button>
-                            </div>
-                        </FormGroup>
-                        <FormGroup>
-                            <div>
-                                <ListGroup>
-                                    <TransitionGroup className="category-list">
-                                        {items.map((item: { _id: any, category: any, isActive: boolean }) => (
+                                                <Button
+                                                    className='remove-btn'
+                                                    color={item.isActive ? 'danger' : 'secondary'}
+                                                    size="sm"
+                                                    onClick={this.onDeleteClick.bind(this, item)}
+                                                >
+                                                    &times;</Button>
+                                                <ListGroupItemText style={{ width: '13rem', textDecorationLine: item.isActive ? '' : 'line-through' }} disabled={item.isActive ? false : true}>
+                                                    {item.category}
+                                                </ListGroupItemText>
+                                                <Button
+                                                    color='link'
+                                                    size="md"
+                                                    onClick={this.onDelete.bind(this, item._id)}
+                                                >
+                                                    <img src={trash} /></Button>
+                                            </ListGroupItem>
+                                        </CSSTransition>
 
-                                            < CSSTransition key={item._id} timeout={500} classNames="fade" >
-                                                <ListGroupItem style={{ color: item.isActive ? '' : '#b3b5b7 !important' }}>
+                                    ))}
+                                </TransitionGroup>
+                            </ListGroup>
+                        </div>
+                    </FormGroup>
+                </Form>
+            </Container>
 
-                                                    <Button
-                                                        className='remove-btn'
-                                                        color={item.isActive ? 'danger' : 'secondary'}
-                                                        size="sm"
-                                                        onClick={this.onDeleteClick.bind(this, item)}
-                                                    >
-                                                        &times;</Button>
-                                                    <ListGroupItemText style={{ textDecorationLine: item.isActive ? '' : 'line-through' }} disabled={item.isActive ? false : true}>
-                                                        {item.category}
-                                                    </ListGroupItemText>
 
-                                                </ListGroupItem>
-                                            </CSSTransition>
-
-                                        ))}
-                                    </TransitionGroup>
-                                </ListGroup>
-                            </div>
-                        </FormGroup>
-                    </Form>
-                </Container>
-
-           
         )
     }
 }
 Settings.propTypes = {
+    getExpenses: PropTypes.func.isRequired,
     getBudget: PropTypes.func.isRequired,
     getitems: PropTypes.func.isRequired,
     category: PropTypes.object.isRequired,
+    expense: PropTypes.object.isRequired,
     budget: PropTypes.object.isRequired
 }
 
 const mapStateToProps = (state: any) => ({
     category: state.category,
+    expense: state.expense,
     budget: state.budget
 })
 
 export default connect(
     mapStateToProps,
-    { getitems, deleteItem, addItem, getBudget, addBudget, updateBudget },
+    { getitems, getExpenses, deleteItem, addItem, getBudget, addBudget, updateBudget ,softdeleteItem,deleteExpense },
 
 )(Settings)

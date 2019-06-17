@@ -19,7 +19,7 @@ export class Home extends Component<any, any> {
     render() {
 
         return (
-            <Container style={{ minWidth: '65rem' }}>
+            <Container style={{ minWidth: '55rem' }}>
                 <ExpenseContent 
                 items={this.props.category.items} 
                 expense={this.props.expense} 
